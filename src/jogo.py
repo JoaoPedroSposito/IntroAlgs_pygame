@@ -13,6 +13,7 @@ from src.config import (
     CAMINHO_SPRITES,
 )
 from src.participante import Participante
+from src.lupa import Lupa
 
 def executar_jogo():
     pygame.init()
@@ -32,8 +33,7 @@ def executar_jogo():
         Participante("Saul", 450, 400, (230,  110, 170)),            
     ] 
     estado = "menu"
-    investigando = None
-    progresso = 0
+    lupa = Lupa()
 
     while rodando:
         tempo_decorrido = relogio.tick(FPS) / 1000
@@ -57,12 +57,11 @@ def executar_jogo():
         if estado == "menu":
             surface = fonte_48.render(TITULO_JOGO, True, BRANCO)
             retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
-            tela.blit(surface, (280, 200))
+            tela.blit(surface, retangulo)
             orientacao = fonte_48.render("Pressione ENTER para jogar", True, BRANCO)
             retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 300))
             tela.blit(orientacao, retangulo)
-            investigando = None
-            progresso = 0
+            lupa = Lupa()
         elif estado == "jogando":
             sob_lupa = None
             for p in participantes:
@@ -70,15 +69,10 @@ def executar_jogo():
                 if p.esta_sob(mouse):
                     pygame.draw.circle(tela, BRANCO, (p.x, p.y), p.raio + 6, 3)
                     sob_lupa = p
-            if sob_lupa is not None and sob_lupa is investigando:
-                progresso += tempo_decorrido
-            else:
-                investigando = sob_lupa
-                progresso = 0
-
-            if progresso >= 1.5:
+                    
+            if lupa.atualizar(sob_lupa, tempo_decorrido):
                 print("Pista revelada")
-                progresso = 0         
+       
             pygame.draw.circle(tela, CINZA, (mouse), 20)
 
         
