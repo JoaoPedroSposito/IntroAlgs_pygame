@@ -17,6 +17,7 @@ from src.config import (
 )
 from src.participante import Participante
 from src.lupa import Lupa
+from src.rodada import preparar_rodada
 
 def executar_jogo():
     pygame.init()
@@ -46,6 +47,7 @@ def executar_jogo():
                 rodando = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and estado == "menu":
+                    preparar_rodada(participantes)
                     estado = "jogando"
                 elif event.key == pygame.K_ESCAPE:
                     if estado == "jogando":
@@ -74,7 +76,7 @@ def executar_jogo():
                     sob_lupa = p
 
             if lupa.atualizar(sob_lupa, tempo_decorrido):
-                print("Pista revelada")
+                lupa.escaneando.revelar_pista()
             #Lupa
             pygame.draw.circle(tela, CINZA, (mouse), RAIO_LUPA)
 

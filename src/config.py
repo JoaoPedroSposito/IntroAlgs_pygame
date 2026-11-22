@@ -11,6 +11,20 @@ RAIO_LUPA = 25
 TEMPO_ESCANEAMENTO = 1.5
 RAIO_PARTICIPANTE = 30
 
+# pistas 
+PISTAS_IA = ["escrita bem formal entre amigos",
+             "não fala nada pessoal",
+             "Reformulou a ideia do grupo em vez de dar opinião própria",
+             "online há 10 h seguidas",
+             "usa gírias fora de contexto",
+             ]
+PISTAS_HUMANO = ["costuma errar na digitação", 
+                 "cita experiências pessoais",
+                 "usa gírias e abreviações",
+                 "faz pausas entre as mensagens"
+                 "responde em 4 s",
+                 ]
+
 # fontes 
 TAMANHO_FONTE_TITULO = 48
 TAMANHO_FONTE_NOME = 24

@@ -12,8 +12,9 @@ class Participante:
         self.y = y
         self.cor = cor
         self.eh_ia = False
-        self.pistas = []
         self.raio = RAIO_PARTICIPANTE
+        self.pistas_reveladas = []
+        self.pistas_disponiveis = []
 
     def desenhar(self, tela, fonte):
         pygame.draw.circle(tela, self.cor, (self.x, self.y), self.raio)
@@ -28,5 +29,10 @@ class Participante:
         distancia_y = mouse[1] - self.y
         return distancia_x * distancia_x + distancia_y * distancia_y <= self.raio * self.raio
 
+    def revelar_pista(self):
+        if len(self.pistas_disponiveis) == 0:
+            return False
+        self.pistas_reveladas.append(self.pistas_disponiveis.pop(0))
+        return True    
 
         

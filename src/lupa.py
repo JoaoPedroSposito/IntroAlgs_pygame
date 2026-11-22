@@ -3,7 +3,7 @@ from src.config import TEMPO_ESCANEAMENTO
 
 class Lupa:
     def __init__(self, tempo_escaneamento=TEMPO_ESCANEAMENTO):
-        self.tempo_escaneamento = TEMPO_ESCANEAMENTO
+        self.tempo_escaneamento = tempo_escaneamento
         self.escaneando = None
         self.progresso = 0
 
