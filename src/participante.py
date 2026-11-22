@@ -2,6 +2,7 @@ import pygame
 from src.config import (
     BRANCO,
     RAIO_PARTICIPANTE,
+    CINZA_MUDO
 )
 
 
@@ -15,6 +16,15 @@ class Participante:
         self.raio = RAIO_PARTICIPANTE
         self.pistas_reveladas = []
         self.pistas_disponiveis = []
+        self.mudo = False
+
+    def revelar_pista(self):
+        if self.mudo or len(self.pistas_disponiveis) == 0:
+            return False
+
+    def desenhar(self, tela, fonte):
+        cor = CINZA_MUDO if self.mudo else self.cor
+        pygame.draw.circle(tela, cor, (self.x, self.y), self.raio)
 
     def desenhar(self, tela, fonte):
         pygame.draw.circle(tela, self.cor, (self.x, self.y), self.raio)

@@ -25,3 +25,20 @@ def limitar_valor(valor, minimo, maximo):
 def verificar_colisao(retangulo_1, retangulo_2):
     """Verifica sobreposição entre dois retângulos do Pygame."""
     return retangulo_1.colliderect(retangulo_2)
+
+
+def quebrar_texto(texto, limite):
+    """Divide o texto em linhas com no máximo `limite` caracteres."""
+    linhas = []
+    linha = ""
+    for palavra in texto.split():
+        if linha == "":
+            linha = palavra
+        elif len(linha) + 1 + len(palavra) <= limite:
+            linha = linha + " " + palavra
+        else:
+            linhas.append(linha)
+            linha = palavra
+    if linha != "":
+        linhas.append(linha)
+    return linhas

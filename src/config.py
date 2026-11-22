@@ -6,6 +6,9 @@ FPS = 60
 
 TITULO_JOGO = "Quem é a IA?"
 
+# jogador
+VIDAS_INICIAIS = 3
+
 # objetos
 RAIO_LUPA = 25
 TEMPO_ESCANEAMENTO = 1.5
@@ -28,12 +31,19 @@ PISTAS_HUMANO = ["costuma errar na digitação",
 # fontes 
 TAMANHO_FONTE_TITULO = 48
 TAMANHO_FONTE_NOME = 24
+TAMANHO_FONTE_PISTA = 22
+
+# painel de pistas
+LARGURA_PAINEL = 200
+LIMITE_LINHA_PAINEL = 24
 
 # cores 
 BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
 CINZA = (212,212,212)       
 AZUL_NOTURNO = (0, 0, 30) 
+AZUL_PAINEL = (15, 15, 60)
+CINZA_MUDO = (90, 90, 90)
 
 # arquivos
 CAMINHO_RECORDE = "data/recorde.txt"

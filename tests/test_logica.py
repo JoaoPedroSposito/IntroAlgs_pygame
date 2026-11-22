@@ -1,6 +1,6 @@
 from src.participante import Participante
 from src.lupa import Lupa
-from src.rodada import preparar_rodada
+from src.rodada import preparar_rodada, acusar
 
 def test_esta_sob():
     p1 = Participante("Ana", 100, 100, (255, 0, 0))
@@ -42,3 +42,33 @@ def test_revelar_pista():
     assert ana.revelar_pista() is True
     assert ana.revelar_pista() is False
     assert ana.pistas_reveladas == ["pista 1", "pista 2"]
+
+from src.funcoes import quebrar_texto
+
+def test_quebrar_texto():
+    assert quebrar_texto("escrita bem formal entre amigos", 24) == ["escrita bem formal entre", "amigos"]
+    assert quebrar_texto("", 24) == []
+
+def test_acusar_ia_acerta():
+    ana = Participante("Ana", 0, 0, (0, 0, 0))
+    ana.eh_ia = True
+    assert acusar(ana, 3) == (True, 3)
+    assert ana.mudo is False
+
+def test_acusar_humano_perde_vida_e_fica_mudo():
+    leo = Participante("Léo", 0, 0, (0, 0, 0))
+    assert acusar(leo, 3) == (False, 2)
+    assert leo.mudo is True
+
+def test_mudo_nao_revela_pista():
+    ana = Participante("Ana", 0, 0, (0, 0, 0))
+    ana.pistas_disponiveis = ["pista 1"]
+    ana.mudo = True
+    assert ana.revelar_pista() is False
+    assert ana.pistas_reveladas == []
+
+def test_preparar_rodada_limpa_mudo():
+    participantes = [Participante(n, 0, 0, (0, 0, 0)) for n in ("A", "B", "C", "D")]
+    participantes[0].mudo = True
+    preparar_rodada(participantes)
+    assert all(p.mudo is False for p in participantes)
