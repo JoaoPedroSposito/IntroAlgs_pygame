@@ -1,16 +1,26 @@
 # Configurações centrais do jogo (tela, cores e caminhos de arquivos).
+# tela
 LARGURA_TELA = 800
 ALTURA_TELA = 600
 FPS = 60
 
 TITULO_JOGO = "Quem é a IA?"
 
+# objetos
+RAIO_LUPA = 25
+TEMPO_ESCANEAMENTO = 1.5
+RAIO_PARTICIPANTE = 30
+
+# fontes 
+TAMANHO_FONTE_TITULO = 48
+TAMANHO_FONTE_NOME = 24
+
+# cores 
 BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
-CINZA = (212,212,212)
-AZUL_ESCURO = (0, 0, 128)       # Azul marinho clássico (Navy)
-AZUL_NOTURNO = (0, 0, 30)     # Ótimo para fundo de tela/céu noturno
-AZUL_PETROLEO = (0, 50, 90)
+CINZA = (212,212,212)       
+AZUL_NOTURNO = (0, 0, 30) 
 
+# arquivos
 CAMINHO_RECORDE = "data/recorde.txt"
 CAMINHO_SPRITES = "assets/imagens/spritesheet.bmp"

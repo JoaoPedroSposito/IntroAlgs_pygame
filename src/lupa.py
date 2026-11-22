@@ -1,6 +1,9 @@
+from src.config import TEMPO_ESCANEAMENTO
+
+
 class Lupa:
-    def __init__(self, tempo_escaneamento=1.5):
-        self.tempo_escaneamento = tempo_escaneamento
+    def __init__(self, tempo_escaneamento=TEMPO_ESCANEAMENTO):
+        self.tempo_escaneamento = TEMPO_ESCANEAMENTO
         self.escaneando = None
         self.progresso = 0
 

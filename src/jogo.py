@@ -5,6 +5,9 @@ from src.config import (
     ALTURA_TELA,
     FPS,
     TITULO_JOGO,
+    RAIO_LUPA,
+    TAMANHO_FONTE_TITULO,
+    TAMANHO_FONTE_NOME,
     CINZA,
     PRETO,
     BRANCO,
@@ -20,8 +23,8 @@ def executar_jogo():
     tela = pygame.display.set_mode((LARGURA_TELA,ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
 
-    fonte_48 = pygame.font.Font(None,48)
-    fonte_24 = pygame.font.Font(None,24)
+    fonte_titulo = pygame.font.Font(None, TAMANHO_FONTE_TITULO)
+    fonte_nome = pygame.font.Font(None, TAMANHO_FONTE_NOME)
 
     relogio = pygame.time.Clock()
     rodando = True
@@ -55,25 +58,25 @@ def executar_jogo():
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
-            surface = fonte_48.render(TITULO_JOGO, True, BRANCO)
+            surface = fonte_titulo.render(TITULO_JOGO, True, BRANCO)
             retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
             tela.blit(surface, retangulo)
-            orientacao = fonte_48.render("Pressione ENTER para jogar", True, BRANCO)
+            orientacao = fonte_titulo.render("Pressione ENTER para jogar", True, BRANCO)
             retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 300))
             tela.blit(orientacao, retangulo)
             lupa = Lupa()
         elif estado == "jogando":
             sob_lupa = None
             for p in participantes:
-                p.desenhar(tela, fonte_24)
+                p.desenhar(tela, fonte_nome)
                 if p.esta_sob(mouse):
                     pygame.draw.circle(tela, BRANCO, (p.x, p.y), p.raio + 6, 3)
                     sob_lupa = p
-                    
+
             if lupa.atualizar(sob_lupa, tempo_decorrido):
                 print("Pista revelada")
-       
-            pygame.draw.circle(tela, CINZA, (mouse), 20)
+            #Lupa
+            pygame.draw.circle(tela, CINZA, (mouse), RAIO_LUPA)
 
         
         pygame.display.flip()

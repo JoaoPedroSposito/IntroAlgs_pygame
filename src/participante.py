@@ -1,5 +1,8 @@
 import pygame
-from src.config import BRANCO
+from src.config import (
+    BRANCO,
+    RAIO_PARTICIPANTE,
+)
 
 
 class Participante:
@@ -10,7 +13,7 @@ class Participante:
         self.cor = cor
         self.eh_ia = False
         self.pistas = []
-        self.raio = 30
+        self.raio = RAIO_PARTICIPANTE
 
     def desenhar(self, tela, fonte):
         pygame.draw.circle(tela, self.cor, (self.x, self.y), self.raio)
