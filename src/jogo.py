@@ -32,6 +32,9 @@ def executar_jogo():
         Participante("Saul", 450, 400, (230,  110, 170)),            
     ] 
     estado = "menu"
+    investigando = None
+    progresso = 0
+
     while rodando:
         tempo_decorrido = relogio.tick(FPS) / 1000
         
@@ -39,27 +42,44 @@ def executar_jogo():
             if event.type == pygame.QUIT:
                 rodando = False
             elif event.type == pygame.KEYDOWN:
-                if estado == "menu" and event.key == pygame.K_RETURN:
-                    estado = "jogando"                
+                if event.key == pygame.K_RETURN and estado == "menu":
+                    estado = "jogando"
                 elif event.key == pygame.K_ESCAPE:
-                    rodando = False
+                    if estado == "jogando":
+                        estado = "menu"
+                    elif estado == "menu":
+                        rodando = False
+
 
         mouse = pygame.mouse.get_pos()  
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
             surface = fonte_48.render(TITULO_JOGO, True, BRANCO)
+            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
             tela.blit(surface, (280, 200))
             orientacao = fonte_48.render("Pressione ENTER para jogar", True, BRANCO)
-            tela.blit(orientacao, (180, 300))
+            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 300))
+            tela.blit(orientacao, retangulo)
+            investigando = None
+            progresso = 0
         elif estado == "jogando":
-            pygame.draw.circle(tela, CINZA, (pygame.mouse.get_pos()), 20)
+            sob_lupa = None
             for p in participantes:
-                        p.desenhar(tela, fonte_24)
-                        if p.esta_sob(mouse):
-                            pygame.draw.circle(tela, BRANCO, (p.x, p.y), p.raio + 6, 3)
-                            "print(p.nome)"
-        
+                p.desenhar(tela, fonte_24)
+                if p.esta_sob(mouse):
+                    pygame.draw.circle(tela, BRANCO, (p.x, p.y), p.raio + 6, 3)
+                    sob_lupa = p
+            if sob_lupa is not None and sob_lupa is investigando:
+                progresso += tempo_decorrido
+            else:
+                investigando = sob_lupa
+                progresso = 0
+
+            if progresso >= 1.5:
+                print("Pista revelada")
+                progresso = 0         
+            pygame.draw.circle(tela, CINZA, (mouse), 20)
 
         
         pygame.display.flip()

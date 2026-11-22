@@ -9,7 +9,7 @@ BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
 CINZA = (212,212,212)
 AZUL_ESCURO = (0, 0, 128)       # Azul marinho clássico (Navy)
-AZUL_NOTURNO = (10, 20, 60)     # Ótimo para fundo de tela/céu noturno
+AZUL_NOTURNO = (0, 0, 30)     # Ótimo para fundo de tela/céu noturno
 AZUL_PETROLEO = (0, 50, 90)
 
 CAMINHO_RECORDE = "data/recorde.txt"
