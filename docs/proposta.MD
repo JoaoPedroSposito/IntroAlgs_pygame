@@ -9,7 +9,7 @@ Quem é a IA?
 ## 2. Integrantes do grupo
 
 - Nome 1: João Pedro Spósito Pereira Cézar
-- Nome 2: Paulo Henrique Pereira De Souza 
+- Nome 2: Paulo Henrique Pereira de Souza 
 - Nome 3: Saul de Castro Macedo
 - Nome 4: Tiago Belico de Oliveira e Silva
 
@@ -34,6 +34,8 @@ Jogo de investigação e dedução em tempo real, com simulação básica de um 
 **Descrição:**
 
 A tela mostra uma sala de chat com vários participantes (círculos com nome) soltando mensagens em balões. Um deles, sorteado a cada rodada, é uma IA disfarçada. O jogador controla uma lupa com o mouse: ao ficar sobre um participante por cerca de 1,5 s, a lupa escaneia e revela uma pista, que fica registrada em um bloco de notas lateral. Uma barra de “Influência da IA” sobe a cada mensagem da IA, e o jogador precisa identificá-la antes que a barra encha. Os desafios são o tempo limitado, a impossibilidade de investigar todos a tempo, os humanos “robóticos” que parecem IA e a IA que fica mais convincente a cada rodada.
+
+As informações vêm de duas fontes que precisam ser cruzadas: as mensagens do chat mostram o estilo de escrita de cada participante, e a lupa revela dados de comportamento, como tempo de resposta e horas online.
 
 ## 6. Objetivo do jogador
 
@@ -78,16 +80,18 @@ Mouse: move a lupa. Manter a lupa parada sobre um participante: escaneia e revel
 
 - Dificuldade 1: Controlar o tempo do escaneamento e da barra de influência de forma independente da taxa de quadros (uso de delta time).
 - Dificuldade 2: Montar rodadas aleatórias equilibradas, garantindo sempre uma única IA e pistas que não revelem a resposta de forma óbvia.
-- Dificuldade 3: Escrever conteúdo suficiente (mensagens e pistas) e organizar o trabalho em equipe e o uso do GitHub, separando lógica testável do código de interface.
+- Dificuldade 3: Escrever conteúdo suficiente (mensagens e pistas) coerentes com o dialogo, e organizar o trabalho em equipe e o uso do GitHub, separando lógica testável do código de interface. As mensagens dos humanos serão escritas por nós do grupo, e as da IA serão geradas por um modelo de linguagem e atraves de comportamentos padrões de IA percebidos pelos integrantes do grupo.
 
 ## 13. Escopo mínimo para a entrega final
 
 **Escopo mínimo:**
 
-Uma tela com 4 participantes por rodada e uma lupa controlada pelo mouse, com escaneamento por tempo de permanência que revela pistas. Três rodadas sorteadas a partir de um arquivo JSON (uma única IA por rodada), acusação com clique, 3 vidas, pontuação, barra de influência da IA, condições de vitória e derrota, tela final com a pontuação, a posição no ranking e uma dica fixa sobre o uso responsável de IA, e ranking simples em arquivo de texto. Testes das funções de lógica (acusação, pontuação, influência e montagem da rodada).
+Versão inicial: uma tela com 4 participantes e uma lupa controlada pelo mouse, com escaneamento por tempo de permanência que revela pistas no bloco de notas. Uma rodada com uma única IA sorteada, acusação com clique, 3 vidas e condições de vitória e derrota. Testes das funções de lógica (escaneamento, sorteio da rodada, pistas e acusação).
+
+Versão final: três rodadas sorteadas a partir de um arquivo JSON, pontuação, barra de influência da IA, tela final com a pontuação, a posição no ranking e uma dica fixa sobre o uso responsável de IA, e ranking simples em arquivo de texto.
 
 ## 14. Possíveis melhorias, caso haja tempo
 
 - Melhoria 1: Aumentar para 8 participantes por rodada, com humanos “robóticos” para criar falsos suspeitos.
 - Melhoria 2: Power-ups (lupa rápida e congelar influência) e combo de acertos seguidos.
-- Melhoria 3: Efeitos visuais e sonoros, menu inicial e tela final com resumo educativo dos erros do jogador.
+- Melhoria 3: Efeitos visuais e sonoros e tela final com resumo educativo dos erros do jogador.
