@@ -1,8 +1,6 @@
-# Nome do Jogo
+# Quem é a IA?
 
 Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
-
-Este repositório é um template para os grupos da disciplina. A proposta é começar com uma base funcional e evoluir o jogo ao longo do semestre.
 
 ## Integrantes do grupo
 
@@ -22,51 +20,31 @@ Este repositório é um template para os grupos da disciplina. A proposta é com
 
 ## Descrição do jogo
 
-Descreva brevemente a ideia principal do jogo.
-
-Exemplo:
-
-> O jogo consiste em controlar um personagem que deve coletar moedas e evitar obstáculos. O jogador ganha pontos ao coletar itens e perde vidas ao colidir com obstáculos. A partida termina quando o tempo acaba ou quando o jogador perde todas as vidas.
+Quatro participantes aparecem na tela e um deles, sorteado a cada partida, é uma IA disfarçada. O jogador usa uma lupa, controlada pelo mouse, para revelar pistas sobre cada participante e tenta descobrir quem é a IA.
 
 ## Objetivo do jogador
 
-Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
-
-Exemplo:
-
-> O objetivo é coletar a maior quantidade possível de itens antes que o tempo acabe, evitando colisões com os obstáculos.
+Acusar a IA antes de ficar sem vidas.
 
 ## Regras do jogo
 
-Liste as principais regras do jogo.
-
-Exemplo:
-
-- O jogador se movimenta usando as setas do teclado.
-- Cada item coletado aumenta a pontuação.
-- Colidir com um obstáculo reduz a quantidade de vidas.
-- A partida termina quando o jogador perde todas as vidas ou quando o tempo acaba.
+- Há exatamente uma IA entre os participantes, sorteada no início da partida.
+- O jogador começa com 3 vidas.
+- Manter a lupa sobre um participante por 1,5 s revela uma pista, que aparece no painel lateral.
+- Acusar a IA vence a partida.
+- Acusar um humano tira 1 vida e deixa esse participante mudo: ele não revela mais pistas e não pode ser acusado de novo.
+- Ao chegar a 0 vidas, o jogador perde.
 
 ## Controles
 
-Informe as teclas ou comandos utilizados no jogo.
-
-Exemplo:
-
-- Seta para cima: mover para cima
-- Seta para baixo: mover para baixo
-- Seta para esquerda: mover para esquerda
-- Seta para direita: mover para direita
-- Espaço: realizar ação
-- ESC: sair do jogo
+- Mouse: move a lupa.
+- Clique esquerdo: acusa o participante sob o cursor.
+- ENTER: inicia a partida no menu e volta ao menu na tela final.
+- ESC: volta ao menu durante a partida e sai do jogo no menu.
 
 ## Como executar o projeto
 
-### 1. Clonar o repositório
-
 ```bash
-git clone LINK_DO_REPOSITORIO
-cd NOME_DA_PASTA
 pip install -r requirements.txt
 python main.py
 ```
@@ -77,15 +55,6 @@ python main.py
 python -m pytest
 ```
 
-## Checklist mínimo para entrega
+## Versão inicial
 
-- Preencher este README com nome final, descrição real, regras e controles do jogo.
-- Atualizar `docs/proposta.MD` com a proposta do grupo.
-- Garantir que o jogo executa com `python main.py`.
-- Garantir que os testes passam com `pytest`.
-
-## Observações para os alunos
-
-- Mantenham o código organizado em módulos pequenos e com responsabilidade clara.
-- Comentem partes importantes da lógica, principalmente regras do jogo.
-- Registrem decisões técnicas no README do grupo ao longo do desenvolvimento.
+Esta versão tem uma rodada por partida. Ainda não há pontuação, tempo, barra de influência da IA nem ranking, previstos em `docs/proposta.MD`.

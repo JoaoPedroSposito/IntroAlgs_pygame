@@ -1,6 +1,7 @@
 from src.participante import Participante
 from src.lupa import Lupa
 from src.rodada import preparar_rodada, acusar
+from src.funcoes import quebrar_texto
 
 def test_esta_sob():
     p1 = Participante("Ana", 100, 100, (255, 0, 0))
@@ -42,8 +43,6 @@ def test_revelar_pista():
     assert ana.revelar_pista() is True
     assert ana.revelar_pista() is False
     assert ana.pistas_reveladas == ["pista 1", "pista 2"]
-
-from src.funcoes import quebrar_texto
 
 def test_quebrar_texto():
     assert quebrar_texto("escrita bem formal entre amigos", 24) == ["escrita bem formal entre", "amigos"]

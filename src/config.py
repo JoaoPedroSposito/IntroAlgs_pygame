@@ -24,7 +24,7 @@ PISTAS_IA = ["escrita bem formal entre amigos",
 PISTAS_HUMANO = ["costuma errar na digitação", 
                  "cita experiências pessoais",
                  "usa gírias e abreviações",
-                 "faz pausas entre as mensagens"
+                 "faz pausas entre as mensagens",
                  "responde em 4 s",
                  ]
 

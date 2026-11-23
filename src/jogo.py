@@ -6,6 +6,7 @@ from src.config import (
     FPS,
     TITULO_JOGO,
     RAIO_LUPA,
+    VIDAS_INICIAIS,
     TAMANHO_FONTE_TITULO,
     TAMANHO_FONTE_NOME,
     TAMANHO_FONTE_PISTA,
@@ -18,27 +19,12 @@ from src.config import (
     AZUL_PAINEL,
     CAMINHO_RECORDE,
     CAMINHO_SPRITES,
-    VIDAS_INICIAIS
 )
+from src.funcoes import quebrar_texto, jogador_perdeu
 from src.participante import Participante
 from src.lupa import Lupa
-from src.funcoes import quebrar_texto, jogador_perdeu
 from src.rodada import preparar_rodada, acusar
 
-def desenhar_painel(tela, fonte_nome, fonte_pista, participantes):
-    x = LARGURA_TELA - LARGURA_PAINEL
-    pygame.draw.rect(tela, AZUL_PAINEL, (x, 0, LARGURA_PAINEL, ALTURA_TELA))
-    y = 20
-    for p in participantes:
-        if len(p.pistas_reveladas) > 0:
-            tela.blit(fonte_nome.render(p.nome, True, p.cor), (x + 15, y))
-            y += 26
-            for pista in p.pistas_reveladas:
-                for linha in quebrar_texto(pista, LIMITE_LINHA_PAINEL):
-                    tela.blit(fonte_pista.render(linha, True, BRANCO), (x + 15, y))
-                    y += 20
-                y += 4
-            y += 12
 
 def criar_participantes():
     return [
@@ -116,6 +102,22 @@ def desenhar_fim(tela, fonte_titulo, mensagem):
     tela.blit(orientacao, retangulo)
 
 
+def desenhar_painel(tela, fonte_nome, fonte_pista, participantes):
+    x = LARGURA_TELA - LARGURA_PAINEL
+    pygame.draw.rect(tela, AZUL_PAINEL, (x, 0, LARGURA_PAINEL, ALTURA_TELA))
+    y = 20
+    for p in participantes:
+        if len(p.pistas_reveladas) > 0:
+            tela.blit(fonte_nome.render(p.nome, True, p.cor), (x + 15, y))
+            y += 26
+            for pista in p.pistas_reveladas:
+                for linha in quebrar_texto(pista, LIMITE_LINHA_PAINEL):
+                    tela.blit(fonte_pista.render(linha, True, BRANCO), (x + 15, y))
+                    y += 20
+                y += 4
+            y += 12
+
+
 def desenhar_partida(tela, fonte_nome, fonte_pista, jogo, participantes, mouse):
     for p in participantes:
         p.desenhar(tela, fonte_nome)
@@ -127,6 +129,7 @@ def desenhar_partida(tela, fonte_nome, fonte_pista, jogo, participantes, mouse):
     tela.blit(vidas, (15, 15))
     #Lupa
     pygame.draw.circle(tela, CINZA, (mouse), RAIO_LUPA)
+
 
 def executar_jogo():
     pygame.init()
