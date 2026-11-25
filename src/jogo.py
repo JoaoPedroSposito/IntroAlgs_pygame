@@ -12,6 +12,13 @@ from src.config import (
     PRETO,
     BRANCO,
     AZUL_NOTURNO,
+    PAINEL_X,
+    PAINEL_LARGURA,
+    COR_PAINEL,
+    TAMANHO_FONTE_PISTA,
+    ESPACO_LINHA,
+    INDENTACAO_PISTA,
+    MARGEM_ESQUERDA,
     CAMINHO_RECORDE,
     CAMINHO_SPRITES,
 )
@@ -26,6 +33,7 @@ def executar_jogo():
 
     fonte_titulo = pygame.font.Font(None, TAMANHO_FONTE_TITULO)
     fonte_nome = pygame.font.Font(None, TAMANHO_FONTE_NOME)
+    fonte_pista = pygame.font.Font(None, TAMANHO_FONTE_PISTA)
 
     relogio = pygame.time.Clock()
     rodando = True
@@ -56,7 +64,7 @@ def executar_jogo():
                         rodando = False
 
 
-        mouse = pygame.mouse.get_pos()  
+        local_mouse = pygame.mouse.get_pos()  
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
@@ -69,16 +77,30 @@ def executar_jogo():
             lupa = Lupa()
         elif estado == "jogando":
             sob_lupa = None
-            for p in participantes:
-                p.desenhar(tela, fonte_nome)
-                if p.esta_sob(mouse):
-                    pygame.draw.circle(tela, BRANCO, (p.x, p.y), p.raio + 6, 3)
-                    sob_lupa = p
+            for participante in participantes:
+                participante.desenhar(tela, fonte_nome)
+                if participante.esta_sob(local_mouse):
+                    pygame.draw.circle(tela, BRANCO, (participante.x, participante.y), participante.raio + 6, 3)
+                    sob_lupa = participante
 
             if lupa.atualizar(sob_lupa, tempo_decorrido):
                 lupa.escaneando.revelar_pista()
+
+            # painel de Pistas 
+            pygame.draw.rect(tela, COR_PAINEL, (PAINEL_X, 0, PAINEL_LARGURA, ALTURA_TELA))
+            linha_y = 20
+            for participante in participantes:
+                surface = fonte_nome.render(participante.nome, True, BRANCO)
+                tela.blit(surface, (PAINEL_X + MARGEM_ESQUERDA, linha_y))
+                linha_y += ESPACO_LINHA
+                for pista in participante.pistas_reveladas:
+                    surface = fonte_pista.render("- " + pista, True, CINZA)
+                    tela.blit(surface, (PAINEL_X + INDENTACAO_PISTA, linha_y))
+                    linha_y += ESPACO_LINHA
+                linha_y += ESPACO_LINHA
+
             #Lupa
-            pygame.draw.circle(tela, CINZA, (mouse), RAIO_LUPA)
+            pygame.draw.circle(tela, CINZA, (local_mouse), RAIO_LUPA)
 
         
         pygame.display.flip()

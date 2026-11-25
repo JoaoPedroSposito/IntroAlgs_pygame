@@ -1,7 +1,7 @@
 # Configurações centrais do jogo (tela, cores e caminhos de arquivos).
 # tela
-LARGURA_TELA = 800
-ALTURA_TELA = 600
+LARGURA_TELA = 960
+ALTURA_TELA = 640
 FPS = 60
 
 TITULO_JOGO = "Quem é a IA?"
@@ -21,19 +21,28 @@ PISTAS_IA = ["escrita bem formal entre amigos",
 PISTAS_HUMANO = ["costuma errar na digitação", 
                  "cita experiências pessoais",
                  "usa gírias e abreviações",
-                 "faz pausas entre as mensagens"
+                 "faz pausas entre as mensagens",
                  "responde em 4 s",
                  ]
 
 # fontes 
 TAMANHO_FONTE_TITULO = 48
-TAMANHO_FONTE_NOME = 24
+TAMANHO_FONTE_NOME = 28
 
 # cores 
 BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
 CINZA = (212,212,212)       
-AZUL_NOTURNO = (0, 0, 30) 
+AZUL_NOTURNO = (0, 0, 30)
+
+# painel de pistas
+PAINEL_X = 700
+PAINEL_LARGURA = LARGURA_TELA - PAINEL_X
+COR_PAINEL = (20, 20, 60)
+TAMANHO_FONTE_PISTA = 22
+ESPACO_LINHA = 24 
+INDENTACAO_PISTA = 25
+MARGEM_ESQUERDA = 15
 
 # arquivos
 CAMINHO_RECORDE = "data/recorde.txt"

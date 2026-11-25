@@ -16,8 +16,8 @@ def preparar_rodada(participantes):
     # distribuir as pistas entre os participantes da rodada 
     for p in participantes:
         if p.eh_ia:
-            pistas = random.sample(PISTAS_IA, 2)
+            pistas = random.sample(PISTAS_IA, 5)
         else:
-            pistas = random.sample(PISTAS_HUMANO, 2)
+            pistas = random.sample(PISTAS_HUMANO, 5)
         random.shuffle(pistas)
         p.pistas_disponiveis = pistas
