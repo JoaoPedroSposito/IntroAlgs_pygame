@@ -8,6 +8,16 @@ class Lupa:
         self.progresso = 0
 
     def atualizar(self, escaneando, tempo_decorrido):
+        """
+        Atualiza o progresso do escaneamento. Chamada uma vez por frame.
+
+        Parâmetros:
+            escaneando (Participante ou None): quem está sob a lupa neste frame
+            tempo_decorrido (float): segundos desde o frame anterior (dt)
+
+        Retorno:
+            bool: True no frame em que o escaneamento completa, senão False
+        """
         if escaneando is not None and escaneando is self.escaneando:
             self.progresso += tempo_decorrido
         else:
