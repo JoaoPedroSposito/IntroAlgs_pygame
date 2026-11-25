@@ -1,5 +1,6 @@
 import pygame
 
+
 from src.config import (
     LARGURA_TELA,
     ALTURA_TELA,

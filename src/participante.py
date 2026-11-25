@@ -1,4 +1,6 @@
 import pygame
+
+
 from src.config import (
     BRANCO,
     LADO_PARTICIPANTE,

@@ -1,4 +1,6 @@
 import random
+
+
 from src.config import PISTAS_IA, PISTAS_HUMANO
 
 
