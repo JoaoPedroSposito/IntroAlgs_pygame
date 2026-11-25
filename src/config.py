@@ -9,12 +9,12 @@ TITULO_JOGO = "Quem é a IA?"
 # objetos
 RAIO_LUPA = 25
 TEMPO_ESCANEAMENTO = 1.5
-RAIO_PARTICIPANTE = 30
+LADO_PARTICIPANTE = 60
 
 # pistas 
 PISTAS_IA = ["escrita bem formal entre amigos",
              "não fala nada pessoal",
-             "Reformulou a ideia do grupo em vez de dar opinião própria",
+             "Reformulou a ideia do grupo em vez de dar opinião própria", # Pendente resolução da quebra de mensagem
              "online há 10 h seguidas",
              "usa gírias fora de contexto",
              ]

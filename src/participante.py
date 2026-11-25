@@ -1,33 +1,32 @@
 import pygame
 from src.config import (
     BRANCO,
-    RAIO_PARTICIPANTE,
+    LADO_PARTICIPANTE,
 )
 
 
 class Participante:
     def __init__(self,nome, x, y, cor):
         self.nome = nome
-        self.x = x
-        self.y = y
         self.cor = cor
+        self.rect = pygame.Rect(0, 0, LADO_PARTICIPANTE, LADO_PARTICIPANTE)
+        self.rect.center = (x, y)
         self.eh_ia = False
-        self.raio = RAIO_PARTICIPANTE
         self.pistas_reveladas = []
         self.pistas_disponiveis = []
+        self.iamgem = None
+        self.mensagem_atual = None
+        self.tempo_balao = 0
 
     def desenhar(self, tela, fonte):
-        pygame.draw.circle(tela, self.cor, (self.x, self.y), self.raio)
+        pygame.draw.rect(tela, self.cor, self.rect)
         surface = fonte.render(self.nome, True, BRANCO)
-        retangulo = surface.get_rect(center=(self.x, self.y + self.raio + 20))
+        retangulo = surface.get_rect(center=(self.rect.centerx, self.rect.bottom + 20))
         tela.blit(surface, retangulo)
 
     def esta_sob(self, mouse):
-        # distancia entre o mouse e o centro do participante
-        # x é horizontal e y é vertical
-        distancia_x = mouse[0] - self.x
-        distancia_y = mouse[1] - self.y
-        return distancia_x * distancia_x + distancia_y * distancia_y <= self.raio * self.raio
+        return self.rect.collidepoint(mouse)
+    
 
     def revelar_pista(self):
         if len(self.pistas_disponiveis) == 0:

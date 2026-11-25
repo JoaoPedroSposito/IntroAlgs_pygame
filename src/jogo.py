@@ -6,6 +6,7 @@ from src.config import (
     FPS,
     TITULO_JOGO,
     RAIO_LUPA,
+    LADO_PARTICIPANTE,
     TAMANHO_FONTE_TITULO,
     TAMANHO_FONTE_NOME,
     CINZA,
@@ -80,7 +81,7 @@ def executar_jogo():
             for participante in participantes:
                 participante.desenhar(tela, fonte_nome)
                 if participante.esta_sob(local_mouse):
-                    pygame.draw.circle(tela, BRANCO, (participante.x, participante.y), participante.raio + 6, 3)
+                    pygame.draw.rect(tela, BRANCO, participante.rect.inflate(12, 12), 3)    
                     sob_lupa = participante
 
             if lupa.atualizar(sob_lupa, tempo_decorrido):
