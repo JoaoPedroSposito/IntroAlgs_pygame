@@ -42,6 +42,8 @@ def executar_jogo():
     pygame.init()
     tela = pygame.display.set_mode((LARGURA_TELA,ALTURA_TELA))
     pygame.display.set_caption(TITULO_JOGO)
+    fundo_menu = pygame.image.load("assets/imagens/menu.png").convert()
+    fundo_menu = pygame.transform.scale(fundo_menu, tela.get_size())
 
     # as fontes são criadas UMA vez aqui, fora do loop, e só depois do pygame.init()
     fonte_titulo = pygame.font.Font(None, TAMANHO_FONTE_TITULO)
@@ -89,6 +91,7 @@ def executar_jogo():
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
+            tela.blit(fundo_menu,(0,0))
             surface = fonte_titulo.render(TITULO_JOGO, True, BRANCO)
             retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
             tela.blit(surface, retangulo)
