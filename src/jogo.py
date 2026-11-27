@@ -36,6 +36,7 @@ from src.participante import Participante
 from src.lupa import Lupa
 from src.rodada import preparar_rodada
 from src.barra import BarraInfluencia
+from src.textos import quebrar_texto
 
 def executar_jogo():
     """
@@ -160,9 +161,10 @@ def executar_jogo():
                 tela.blit(surface, (PAINEL_X + MARGEM_ESQUERDA, linha_y))
                 linha_y += ESPACO_LINHA
                 for pista in participante.pistas_reveladas:
-                    surface = fonte_pista.render("- " + pista, True, CINZA)
-                    tela.blit(surface, (PAINEL_X + INDENTACAO_PISTA, linha_y))
-                    linha_y += ESPACO_LINHA
+                    for linha in quebrar_texto("- " + pista, fonte_pista, PAINEL_LARGURA - INDENTACAO_PISTA - 10):
+                        surface = fonte_pista.render(linha, True, CINZA)
+                        tela.blit(surface, (PAINEL_X + INDENTACAO_PISTA, linha_y))
+                        linha_y += ESPACO_LINHA
                 # linha em branco entre um participante e o próximo
                 linha_y += ESPACO_LINHA
 
@@ -170,7 +172,7 @@ def executar_jogo():
             pygame.draw.rect(tela, COR_FUNDO_BARRA, (BARRA_X, BARRA_Y, BARRA_LARGURA, BARRA_ALTURA))
             largura_cheia = int(BARRA_LARGURA * barra.valor_atual / BARRA_MAXIMO)
             pygame.draw.rect(tela, COR_BARRA, (BARRA_X, BARRA_Y, largura_cheia, BARRA_ALTURA))
-            texto = fonte_nome.render("Influência da IA: " + str(int(barra.valor_atual)) + "%", True, BRANCO)
+            texto = fonte_nome.render("INFLUÊNCIA DA IA: " + str(int(barra.valor_atual)) + "%", True, BRANCO)
             tela.blit(texto, (BARRA_X, BARRA_Y - 28))
 
             #Lupa
