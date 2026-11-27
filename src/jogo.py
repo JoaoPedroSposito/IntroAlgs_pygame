@@ -8,6 +8,14 @@ from src.config import (
     TITULO_JOGO,
     RAIO_LUPA,
     LADO_PARTICIPANTE,
+    BARRA_MAXIMO,
+    AUMENTO_ESCANEAMENTO,
+    BARRA_X,
+    BARRA_Y,
+    BARRA_LARGURA,
+    BARRA_ALTURA,
+    COR_BARRA,
+    COR_FUNDO_BARRA,
     TAMANHO_FONTE_TITULO,
     TAMANHO_FONTE_NOME,
     CINZA,
@@ -27,6 +35,7 @@ from src.config import (
 from src.participante import Participante
 from src.lupa import Lupa
 from src.rodada import preparar_rodada
+from src.barra import BarraInfluencia
 
 def executar_jogo():
     """
@@ -53,13 +62,14 @@ def executar_jogo():
 
     # os 4 participantes: (nome, x do centro, y do centro, cor RGB)
     participantes = [
-        Participante("Ana", 150, 200, (90, 160, 250)),
-        Participante("Laerte", 450, 200, (255, 150, 90)),
-        Participante("Paulo", 150, 400, (120, 200, 130)),
-        Participante("Saul", 450, 400, (230,  110, 170)),            
+        Participante("Ana", 100, 230, (90, 160, 250)),
+        Participante("Laerte", 600, 230, (255, 150, 90)),
+        Participante("Paulo", 100, 460, (120, 200, 130)),
+        Participante("Saul", 600, 460, (230,  110, 170)),            
     ] 
     estado = "menu"
     suspeito = None
+    barra = BarraInfluencia()
     lupa = Lupa()
 
     while rodando:
@@ -75,6 +85,7 @@ def executar_jogo():
                     # começa a rodada: sorteia a IA e distribui as pistas
                     preparar_rodada(participantes)
                     suspeito = None
+                    barra = BarraInfluencia()
                     estado = "jogando"
                 elif event.key == pygame.K_RETURN and estado in ("vitoria", "derrota"):
                     estado = "menu"
@@ -119,24 +130,31 @@ def executar_jogo():
             for participante in participantes:
                 participante.desenhar(tela, fonte_nome)
                 if participante is suspeito:
-                    pygame.draw.rect(tela, COR_SUSPEITO, participante.rect.inflate(12, 12), 4)
+                    pygame.draw.rect(tela, COR_SUSPEITO, participante.rect.inflate(5, 5), 3)
+                    surface = fonte_nome.render("SUSPEITO", True, COR_SUSPEITO)
+                    retangulo = surface.get_rect(center=(participante.rect.centerx, participante.rect.bottom + 20))
+                    tela.blit(surface, retangulo)
                 if participante.esta_sob(local_mouse):
                     # inflate(12, 12) devolve uma cópia do quadrado 12 pixels
                     # maior (6 de cada lado); o 3 é a espessura da linha
-                    pygame.draw.rect(tela, BRANCO, participante.rect.inflate(12, 12), 3)    
+                    pygame.draw.rect(tela, BRANCO, participante.rect.inflate(10, 10), 3)    
                     sob_lupa = participante
 
             # atualizar devolve True no frame em que o escaneamento completa
             # aí a pista do participante escaneado é revelada
             if lupa.atualizar(sob_lupa, tempo_decorrido):
-                lupa.escaneando.revelar_pista()
+                if lupa.escaneando.revelar_pista():
+                   barra.subir_escaneamento(AUMENTO_ESCANEAMENTO)
+
+            barra.atualizar(tempo_decorrido)
+            if barra.encheu():
+                estado = "derrota"
 
             # painel de Pistas 
-            # fundo do painel; é desenhado antes dos textos para ficar por baixo
-            pygame.draw.rect(tela, COR_PAINEL, (PAINEL_X, 0, PAINEL_LARGURA, ALTURA_TELA))
+            pygame.draw.rect(tela, COR_PAINEL, (PAINEL_X, 100, PAINEL_LARGURA, ALTURA_TELA))
             # linha_y é a posição vertical da linha que vai ser escrita; desce a
             # cada linha escrita, como a caneta descendo no caderno
-            linha_y = 20
+            linha_y = 120
             for participante in participantes:
                 surface = fonte_nome.render(participante.nome, True, BRANCO)
                 tela.blit(surface, (PAINEL_X + MARGEM_ESQUERDA, linha_y))
@@ -147,6 +165,13 @@ def executar_jogo():
                     linha_y += ESPACO_LINHA
                 # linha em branco entre um participante e o próximo
                 linha_y += ESPACO_LINHA
+
+            # barra de influência
+            pygame.draw.rect(tela, COR_FUNDO_BARRA, (BARRA_X, BARRA_Y, BARRA_LARGURA, BARRA_ALTURA))
+            largura_cheia = int(BARRA_LARGURA * barra.valor_atual / BARRA_MAXIMO)
+            pygame.draw.rect(tela, COR_BARRA, (BARRA_X, BARRA_Y, largura_cheia, BARRA_ALTURA))
+            texto = fonte_nome.render("Influência da IA: " + str(int(barra.valor_atual)) + "%", True, BRANCO)
+            tela.blit(texto, (BARRA_X, BARRA_Y - 28))
 
             #Lupa
              # desenhada por último para ficar por cima de tudo

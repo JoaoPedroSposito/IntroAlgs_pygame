@@ -13,10 +13,20 @@ TAMANHO_FONTE_NOME = 28
 # objetos
 RAIO_LUPA = 25
 TEMPO_ESCANEAMENTO = 1.5
-LADO_PARTICIPANTE = 60
+LADO_PARTICIPANTE = 100
 
-# barra
-# (Paulo) valores da barra de influência 
+# barra de nfluencia
+BARRA_MAXIMO = 100
+ATRASO_BARRA = (1.5, 4.0)
+AUMENTO_ESCANEAMENTO = 15
+AUMENTO_MENSAGEM_IA = 10 
+# visual barra 
+BARRA_X = 200
+BARRA_Y = 50
+BARRA_LARGURA = 400
+BARRA_ALTURA = 20
+COR_BARRA = (255, 200, 0)
+COR_FUNDO_BARRA = (60, 60, 80)
 
 # dialogo
 # (Pessoa 2) atrasos de fala, duração do balão etc.
@@ -55,7 +65,7 @@ BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
 CINZA = (212, 212, 212)
 AZUL_NOTURNO = (0, 0, 30)
-COR_SUSPEITO = (255, 200, 0)
+COR_SUSPEITO = (220, 60, 60)
 
 # arquivos
 CAMINHO_SPRITES = "assets/imagens/spritesheet.bmp"
