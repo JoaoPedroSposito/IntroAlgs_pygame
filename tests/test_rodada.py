@@ -13,3 +13,12 @@ def test_todos_tem_pistas_disponiveis():
     preparar_rodada(participantes)
     assert all(len(p.pistas_disponiveis) >= 2 for p in participantes)
 
+def test_humanos_nao_repetem_pistas():
+    """Duas pessoas humanas nunca recebem a mesma pista na mesma rodada."""
+    participantes = [Participante(n, 0, 0, (0, 0, 0)) for n in ("A", "B", "C", "D")]
+    preparar_rodada(participantes)
+    pistas_humanas = []
+    for p in participantes:
+        if not p.eh_ia:
+            pistas_humanas += p.pistas_disponiveis
+    assert len(pistas_humanas) == len(set(pistas_humanas))

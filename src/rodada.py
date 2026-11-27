@@ -24,15 +24,21 @@ def preparar_rodada(participantes):
         p.pistas_reveladas = []
         p.pistas_disponiveis = []
 
-
-    ia = random.choice(participantes)
+    ia = random.choice(participantes) # Escolhe um
     ia.eh_ia = True
 
-    # distribuir as pistas entre os participantes da rodada 
+    pistas_ia = PISTAS_IA.copy()
+    pistas_humano = PISTAS_HUMANO.copy()
+
+    # distribuir as pistas entre os participantes da rodada
     for p in participantes:
         if p.eh_ia:
-            pistas = random.sample(PISTAS_IA, 5)
+            pistas = random.sample(pistas_ia, 2)
+            for pista in pistas:
+                pistas_ia.remove(pista)
         else:
-            pistas = random.sample(PISTAS_HUMANO, 5)
-        random.shuffle(pistas)
+            pistas = random.sample(pistas_humano, 2)
+            for pista in pistas:
+                pistas_humano.remove(pista)
+        random.shuffle(pistas)   # Embaralha 
         p.pistas_disponiveis = pistas

@@ -42,6 +42,9 @@ PISTAS_HUMANO = ["costuma errar na digitação",
                  "usa gírias e abreviações",
                  "faz pausas entre as mensagens",
                  "responde em 4 s",
+                 "se corrige depois de errar uma palavra",
+                 "demora minutos para responder",
+                 "só aparece online à noite",
                  ]
 
 # personagens
@@ -52,6 +55,7 @@ BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
 CINZA = (212, 212, 212)
 AZUL_NOTURNO = (0, 0, 30)
+COR_SUSPEITO = (255, 200, 0)
 
 # arquivos
 CAMINHO_SPRITES = "assets/imagens/spritesheet.bmp"
