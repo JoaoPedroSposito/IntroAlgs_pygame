@@ -16,6 +16,8 @@ def preparar_rodada(participantes):
         p.eh_ia = False
         p.pistas_reveladas = []
         p.pistas_disponiveis = []
+        p.mensagem_atual = None
+        p.tempo_balao = 0
 
     ia = random.choice(participantes) # Escolhe um
     ia.eh_ia = True
@@ -45,7 +47,7 @@ def calcular_pontos(valor_barra, acertou):
         acertou (bool): True se o jogador acusou a IA certa
 
     Retorno:
-        int: pontos da partida (0 se errou
+        int: pontos da partida (0 se errou)
     """
     if not acertou:
         return 0
