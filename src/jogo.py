@@ -17,6 +17,7 @@ from src.config import (
     PAINEL_X,
     PAINEL_LARGURA,
     COR_PAINEL,
+    COR_SUSPEITO,
     TAMANHO_FONTE_PISTA,
     ESPACO_LINHA,
     INDENTACAO_PISTA,
@@ -58,6 +59,7 @@ def executar_jogo():
         Participante("Saul", 450, 400, (230,  110, 170)),            
     ] 
     estado = "menu"
+    suspeito = None
     lupa = Lupa()
 
     while rodando:
@@ -72,13 +74,30 @@ def executar_jogo():
                 if event.key == pygame.K_RETURN and estado == "menu":
                     # começa a rodada: sorteia a IA e distribui as pistas
                     preparar_rodada(participantes)
+                    suspeito = None
                     estado = "jogando"
+                elif event.key == pygame.K_RETURN and estado in ("vitoria", "derrota"):
+                    estado = "menu"
+                elif event.key == pygame.K_SPACE and estado == "jogando" and suspeito is not None:
+                    if suspeito.eh_ia:
+                        estado = "vitoria"
+                    else:
+                        estado = "derrota"
                 elif event.key == pygame.K_ESCAPE:
                     # ESC volta ao menu; no menu, ele fecha o jogo
                     if estado == "jogando":
                         estado = "menu"
                     elif estado == "menu":
                         rodando = False
+            # Marcação de suspeito 
+            elif event.type == pygame.MOUSEBUTTONDOWN and estado == "jogando":
+                if event.button == 1:
+                    for participante in participantes:
+                        if participante.esta_sob(event.pos):
+                            if participante is suspeito:
+                                suspeito = None
+                            else:
+                                suspeito = participante
 
         # posição atual do mouse: (x, y) 
         # lembrem de usar a variavel e n get_pos() toda hora
@@ -99,13 +118,15 @@ def executar_jogo():
             sob_lupa = None
             for participante in participantes:
                 participante.desenhar(tela, fonte_nome)
+                if participante is suspeito:
+                    pygame.draw.rect(tela, COR_SUSPEITO, participante.rect.inflate(12, 12), 4)
                 if participante.esta_sob(local_mouse):
                     # inflate(12, 12) devolve uma cópia do quadrado 12 pixels
                     # maior (6 de cada lado); o 3 é a espessura da linha
                     pygame.draw.rect(tela, BRANCO, participante.rect.inflate(12, 12), 3)    
                     sob_lupa = participante
 
-             # atualizar devolve True no frame em que o escaneamento completa;
+            # atualizar devolve True no frame em que o escaneamento completa
             # aí a pista do participante escaneado é revelada
             if lupa.atualizar(sob_lupa, tempo_decorrido):
                 lupa.escaneando.revelar_pista()
@@ -131,6 +152,17 @@ def executar_jogo():
              # desenhada por último para ficar por cima de tudo
             pygame.draw.circle(tela, CINZA, (local_mouse), RAIO_LUPA)
 
+        elif estado == "vitoria" or estado == "derrota":
+            if estado == "vitoria":
+                mensagem = "Parabéns você encontrou a IA!"
+            else:
+                mensagem = "Você deixou a IA dominar"
+            surface = fonte_titulo.render(mensagem, True, BRANCO)
+            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 250))
+            tela.blit(surface, retangulo)
+            orientacao = fonte_nome.render("Pressione ENTER para voltar ao menu", True, CINZA)
+            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 320))
+            tela.blit(orientacao, retangulo)
         # mostra na janela o que foi desenhado neste frame
         pygame.display.flip()
 
