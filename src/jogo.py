@@ -8,10 +8,8 @@ from src.config import (
     TITULO_JOGO,
     RAIO_LUPA,
     LADO_PARTICIPANTE,
-    TAMANHO_FONTE_TITULO,
     TAMANHO_FONTE_NOME,
     CINZA,
-    PRETO,
     BRANCO,
     AZUL_NOTURNO,
     PAINEL_X,
@@ -46,9 +44,15 @@ def executar_jogo():
     fundo_menu = pygame.transform.scale(fundo_menu, tela.get_size())
 
     # as fontes são criadas UMA vez aqui, fora do loop, e só depois do pygame.init()
-    fonte_titulo = pygame.font.Font(None, TAMANHO_FONTE_TITULO)
     fonte_nome = pygame.font.Font(None, TAMANHO_FONTE_NOME)
     fonte_pista = pygame.font.Font(None, TAMANHO_FONTE_PISTA)
+    fonte_menu = pygame.font.SysFont("consolas", 64, bold=True)
+    fonte_instrucao = pygame.font.SysFont("consolas",22)
+    titulo_menu = fonte_menu.render(TITULO_JOGO,True,(99,235,255))
+    instrucao_menu = fonte_instrucao.render("Pressione Enter Para Jogar",True,(195,215,230))
+    centro_x = LARGURA_TELA//2
+    pos_titulo = titulo_menu.get_rect(center=(centro_x,185))
+    pos_instrucao = instrucao_menu.get_rect(center=(centro_x,245))
 
     relogio = pygame.time.Clock()
     rodando = True
@@ -92,12 +96,9 @@ def executar_jogo():
 
         if estado == "menu":
             tela.blit(fundo_menu,(0,0))
-            surface = fonte_titulo.render(TITULO_JOGO, True, BRANCO)
-            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
-            tela.blit(surface, retangulo)
-            orientacao = fonte_titulo.render("Pressione ENTER para jogar", True, BRANCO)
-            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 300))
-            tela.blit(orientacao, retangulo)
+            tela.blit(titulo_menu, pos_titulo)
+            if pygame.time.get_ticks() % 1000 < 700:
+                tela.blit(instrucao_menu, pos_instrucao)
             # uma Lupa nova a cada frame no menu: zera o escaneamento ao voltar
             lupa = Lupa()
         elif estado == "jogando":
