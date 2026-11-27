@@ -15,6 +15,6 @@ def carregar_json(caminho):
         O arquivo é lido em UTF-8 para aceitar acentos
         Se o arquivo não existir, ocorre FileNotFoundError
     """
-     
+    
     with open(caminho, "r", encoding="utf-8") as arquivo:
         return json.load(arquivo)

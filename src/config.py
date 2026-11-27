@@ -31,18 +31,20 @@ INDENTACAO_PISTA = 25
 MARGEM_ESQUERDA = 15
 
 # pistas
-PISTAS_IA = ["escrita bem formal entre amigos",
-             "não fala nada pessoal",
-             "Reformulou a ideia do grupo em vez de dar opinião própria", # Pendente resolução da quebra de mensagem
-             "online há 10 h seguidas",
-             "usa gírias fora de contexto",
-             ]
-PISTAS_HUMANO = ["costuma errar na digitação",
-                 "cita experiências pessoais",
-                 "usa gírias e abreviações",
-                 "faz pausas entre as mensagens",
-                 "responde em 4 s",
-                 ]
+PISTAS_IA = [
+            "escrita bem formal entre amigos",
+            "não fala nada pessoal",
+            "Reformulou a ideia do grupo em vez de dar opinião própria", # Pendente resolução da quebra de mensagem
+            "online há 10 h seguidas",
+            "usa gírias fora de contexto",
+            ]
+PISTAS_HUMANO = [
+                "costuma errar na digitação",
+                "cita experiências pessoais",
+                "usa gírias e abreviações",
+                "faz pausas entre as mensagens",
+                "responde em 4 s",
+                ]
 
 # personagens
 # (Pessoa 4) lista NOMES_AVATARES e tamanho dos avatares 

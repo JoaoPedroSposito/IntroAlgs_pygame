@@ -26,6 +26,7 @@ from src.config import (
 from src.participante import Participante
 from src.lupa import Lupa
 from src.rodada import preparar_rodada
+from src.sprites import pegar_sprite
 
 def executar_jogo():
     """
@@ -52,14 +53,16 @@ def executar_jogo():
 
     # os 4 participantes: (nome, x do centro, y do centro, cor RGB)
     participantes = [
-        Participante("Ana", 150, 200, (90, 160, 250)),
-        Participante("Laerte", 450, 200, (255, 150, 90)),
-        Participante("Paulo", 150, 400, (120, 200, 130)),
-        Participante("Saul", 450, 400, (230,  110, 170)),            
+        Participante("João", 150, 200, (90, 160, 250)),
+        Participante("Paulo", 450, 200, (255, 150, 90)),
+        Participante("Saul", 150, 400, (120, 200, 130)),
+        Participante("Tiago", 450, 400, (230,  110, 170)),            
     ] 
     estado = "menu"
     lupa = Lupa()
-
+    posicoes_x = [76,388,699,1011]
+    for i in range(len(participantes)):
+        participantes[i].imagem = pegar_sprite(CAMINHO_SPRITES, x=posicoes_x[i],y = 57, width=258, height=258, scale=LADO_PARTICIPANTE/258)
     while rodando:
 
         # O dt faz o tempo ser o mesmo em qualquer computador
@@ -105,7 +108,7 @@ def executar_jogo():
                     pygame.draw.rect(tela, BRANCO, participante.rect.inflate(12, 12), 3)    
                     sob_lupa = participante
 
-             # atualizar devolve True no frame em que o escaneamento completa;
+            # atualizar devolve True no frame em que o escaneamento completa;
             # aí a pista do participante escaneado é revelada
             if lupa.atualizar(sob_lupa, tempo_decorrido):
                 lupa.escaneando.revelar_pista()
@@ -128,7 +131,7 @@ def executar_jogo():
                 linha_y += ESPACO_LINHA
 
             #Lupa
-             # desenhada por último para ficar por cima de tudo
+            # desenhada por último para ficar por cima de tudo
             pygame.draw.circle(tela, CINZA, (local_mouse), RAIO_LUPA)
 
         # mostra na janela o que foi desenhado neste frame
