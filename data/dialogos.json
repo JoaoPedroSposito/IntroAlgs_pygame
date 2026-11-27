@@ -1,0 +1,46 @@
+[
+  {
+    "assunto": "Onde vamos jantar hoje?",
+    "ordem": ["A","B","C","D","A","C","B","D","A","D","C","B"],
+    "papeis": {
+      "A": {
+        "humano": [
+          "bora de hamburguer hj? to morrendo de fome kkk",
+          "mano a hamburgueria da esquina ta com promo de 2 por 1",
+          "fechou entao, 20h la na praca?"
+        ],
+        "ia": [
+          "Sugiro um hambúrguer. É uma opção prática e agrada a maioria.",
+          "Há uma promoção de dois por um na hamburgueria da esquina.",
+          "Combinado. Podemos nos encontrar às 20h na praça."
+        ]
+      },
+      "B": {
+        "humano": [
+          "hmm prefiro algo mais leve, tipo salada?",
+          "ontem comi tanta coisa q ainda to cheio",
+          "blz vou de hamburguer mas sem batata"
+        ],
+        "ia": [
+          "Eu poderia optar por algo mais leve, como uma salada.",
+          "Ontem fiz uma refeição bastante completa, então prefiro algo leve.",
+          "Está bem. Posso acompanhar vocês, desde que seja sem batata frita."
+        ]
+      },
+      "C": {
+        "humano": [
+          "eu vou onde o povo for, to sem grana essa semana",
+          "hamburguer ta bom, so n pode passar de 30 conto",
+          "vou chegar um pouco atrasado, ok?"
+        ]
+      },
+      "D": {
+        "humano": [
+          "gente me esperem, saio do trabalho as 19h30",
+          "pelo caminho passo e ja vejo se tem fila",
+          "otimo, nos vemos la entao"
+        ]
+      }
+    }
+  }
+]
