@@ -1,4 +1,4 @@
-from src.rodada import preparar_rodada
+from src.rodada import preparar_rodada, calcular_pontos
 from src.participante import Participante
 
 
@@ -22,3 +22,9 @@ def test_humanos_nao_repetem_pistas():
         if not p.eh_ia:
             pistas_humanas += p.pistas_disponiveis
     assert len(pistas_humanas) == len(set(pistas_humanas))
+
+def test_calcular_pontos():
+    """Acertar com a barra baixa vale mais; errar vale 0."""
+    assert calcular_pontos(0, True) == 1000
+    assert calcular_pontos(30, True) == 700
+    assert calcular_pontos(30, False) == 0

@@ -10,13 +10,6 @@ def preparar_rodada(participantes):
 
     Parâmetros:
         participantes (list): lista de Participante da rodada
-
-    Informações relevantes:
-        Não devolve nada: altera os próprios objetos da lista
-        Primeiro limpa tudo da rodada anterior, depois sorteia
-        Cada participante recebe pistas do grupo certo (IA ou humano)
-        random.sample sorteia sem repetir; shuffle embaralha a ordem em que
-        as pistas serão reveladas
     """
     # limpa o estado da rodada anterior
     for p in participantes:
@@ -42,3 +35,18 @@ def preparar_rodada(participantes):
                 pistas_humano.remove(pista)
         random.shuffle(pistas)   # Embaralha 
         p.pistas_disponiveis = pistas
+
+def calcular_pontos(valor_barra, acertou):
+    """
+    Calcula a pontuação da partida.
+
+    Parâmetros:
+        valor_barra (float): influência da IA no momento da acusação (0 a 100)
+        acertou (bool): True se o jogador acusou a IA certa
+
+    Retorno:
+        int: pontos da partida (0 se errou
+    """
+    if not acertou:
+        return 0
+    return int((100 - valor_barra) * 10)

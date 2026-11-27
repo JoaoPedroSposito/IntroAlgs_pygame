@@ -34,7 +34,7 @@ from src.config import (
 )
 from src.participante import Participante
 from src.lupa import Lupa
-from src.rodada import preparar_rodada
+from src.rodada import preparar_rodada, calcular_pontos
 from src.barra import BarraInfluencia
 from src.textos import quebrar_texto
 
@@ -72,6 +72,7 @@ def executar_jogo():
     suspeito = None
     barra = BarraInfluencia()
     lupa = Lupa()
+    pontos = 0
 
     while rodando:
 
@@ -91,6 +92,7 @@ def executar_jogo():
                 elif event.key == pygame.K_RETURN and estado in ("vitoria", "derrota"):
                     estado = "menu"
                 elif event.key == pygame.K_SPACE and estado == "jogando" and suspeito is not None:
+                    pontos = calcular_pontos(barra.valor_atual, suspeito.eh_ia)
                     if suspeito.eh_ia:
                         estado = "vitoria"
                     else:
@@ -117,11 +119,11 @@ def executar_jogo():
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
-            surface = fonte_titulo.render(TITULO_JOGO, True, BRANCO)
-            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
+            surface = fonte_titulo.render(TITULO_JOGO.upper(), True, BRANCO)
+            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 250))
             tela.blit(surface, retangulo)
             orientacao = fonte_titulo.render("Pressione ENTER para jogar", True, BRANCO)
-            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 300))
+            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 350))
             tela.blit(orientacao, retangulo)
             # uma Lupa nova a cada frame no menu: zera o escaneamento ao voltar
             lupa = Lupa()
@@ -140,7 +142,10 @@ def executar_jogo():
                     # maior (6 de cada lado); o 3 é a espessura da linha
                     pygame.draw.rect(tela, BRANCO, participante.rect.inflate(10, 10), 3)    
                     sob_lupa = participante
-
+            pontos_possiveis = calcular_pontos(barra.valor_atual, True)
+            pontuacao = fonte_titulo.render("Pontos: " + str(pontos_possiveis), True, BRANCO)
+            retangulo = pontuacao.get_rect(topright=(910, 40))
+            tela.blit(pontuacao, retangulo)
             # atualizar devolve True no frame em que o escaneamento completa
             # aí a pista do participante escaneado é revelada
             if lupa.atualizar(sob_lupa, tempo_decorrido):
@@ -185,10 +190,13 @@ def executar_jogo():
             else:
                 mensagem = "Você deixou a IA dominar"
             surface = fonte_titulo.render(mensagem, True, BRANCO)
-            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 250))
+            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 240))
             tela.blit(surface, retangulo)
+            pontuacao = fonte_titulo.render("Pontuação: " + str(pontos), True, BRANCO)
+            retangulo = pontuacao.get_rect(center=(LARGURA_TELA // 2, 290))
+            tela.blit(pontuacao, retangulo)
             orientacao = fonte_nome.render("Pressione ENTER para voltar ao menu", True, CINZA)
-            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 320))
+            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 390))
             tela.blit(orientacao, retangulo)
         # mostra na janela o que foi desenhado neste frame
         pygame.display.flip()
