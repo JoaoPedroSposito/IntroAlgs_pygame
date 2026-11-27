@@ -29,7 +29,12 @@ COR_BARRA = (255, 200, 0)
 COR_FUNDO_BARRA = (60, 60, 80)
 
 # dialogo
-# (Pessoa 2) atrasos de fala, duração do balão etc.
+CAMINHO_DIALOGOS = "data/dialogos.json"
+ATRASO_HUMANO = (2.5, 5.0)     
+ATRASO_IA = (0.5, 4.0)         
+DURACAO_BALAO = 6              
+LARGURA_BALAO = 185 
+LARGURA_ASSUNTO = 100       
 
 # painel de pistas
 PAINEL_X = 700

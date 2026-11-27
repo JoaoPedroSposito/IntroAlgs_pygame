@@ -22,6 +22,10 @@ from src.config import (
     PRETO,
     BRANCO,
     AZUL_NOTURNO,
+    DURACAO_BALAO,
+    LARGURA_BALAO,
+    LARGURA_ASSUNTO,
+    AUMENTO_MENSAGEM_IA,
     PAINEL_X,
     PAINEL_LARGURA,
     COR_PAINEL,
@@ -37,6 +41,7 @@ from src.lupa import Lupa
 from src.rodada import preparar_rodada, calcular_pontos
 from src.barra import BarraInfluencia
 from src.textos import quebrar_texto
+from src.dialogo import Dialogo
 
 def executar_jogo():
     """
@@ -72,6 +77,7 @@ def executar_jogo():
     suspeito = None
     barra = BarraInfluencia()
     lupa = Lupa()
+    dialogo = Dialogo()
     pontos = 0
 
     while rodando:
@@ -86,6 +92,7 @@ def executar_jogo():
                 if event.key == pygame.K_RETURN and estado == "menu":
                     # começa a rodada: sorteia a IA e distribui as pistas
                     preparar_rodada(participantes)
+                    dialogo.iniciar(participantes)
                     suspeito = None
                     barra = BarraInfluencia()
                     estado = "jogando"
@@ -153,6 +160,15 @@ def executar_jogo():
                    barra.subir_escaneamento(AUMENTO_ESCANEAMENTO)
 
             barra.atualizar(tempo_decorrido)
+
+            fala = dialogo.atualizar(tempo_decorrido)
+            if fala is not None:
+                quem, texto = fala
+                quem.mensagem_atual = texto
+                quem.tempo_balao = DURACAO_BALAO
+                if quem.eh_ia:
+                    barra.subir(AUMENTO_MENSAGEM_IA)     # sobe com atraso: é o delay combinado
+
             if barra.encheu():
                 estado = "derrota"
 
@@ -179,6 +195,31 @@ def executar_jogo():
             pygame.draw.rect(tela, COR_BARRA, (BARRA_X, BARRA_Y, largura_cheia, BARRA_ALTURA))
             texto = fonte_nome.render("INFLUÊNCIA DA IA: " + str(int(barra.valor_atual)) + "%", True, BRANCO)
             tela.blit(texto, (BARRA_X, BARRA_Y - 28))
+
+            linhas_assunto = quebrar_texto("Assunto: " + dialogo.assunto, fonte_pista, LARGURA_ASSUNTO)
+            assunto_y = 20
+            for linha in linhas_assunto:
+                surface = fonte_nome.render(linha, True, BRANCO)
+                tela.blit(surface, (20, assunto_y))
+                assunto_y += ESPACO_LINHA
+
+            for participante in participantes:
+                if participante.tempo_balao > 0:
+                    participante.tempo_balao -= tempo_decorrido
+                    linhas = quebrar_texto(participante.mensagem_atual, fonte_pista, LARGURA_BALAO - 16)
+                    altura = len(linhas) * ESPACO_LINHA + 12
+                    if participante.rect.centerx < LARGURA_TELA // 2:
+                        balao_x = participante.rect.right + 10                    # coluna da esquerda: abre para a direita
+                    else:
+                        balao_x = participante.rect.left - 10 - LARGURA_BALAO     # coluna da direita: abre para a esquerda
+
+                    balao = pygame.Rect(balao_x, participante.rect.top, LARGURA_BALAO, altura)
+                    pygame.draw.rect(tela, BRANCO, balao)
+                    y = balao.top + 6
+                    for linha in linhas:
+                        surface = fonte_pista.render(linha, True, PRETO)
+                        tela.blit(surface, (balao.left + 8, y))
+                        y += ESPACO_LINHA
 
             #Lupa
              # desenhada por último para ficar por cima de tudo
