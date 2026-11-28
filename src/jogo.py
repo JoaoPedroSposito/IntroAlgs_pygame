@@ -64,7 +64,9 @@ def executar_jogo():
     fonte_nome = pygame.font.Font(None, TAMANHO_FONTE_NOME)
     fonte_pista = pygame.font.Font(None, TAMANHO_FONTE_PISTA)
     fonte_menu = pygame.font.SysFont("consolas", 64, bold=True)
+    fonte_end = pygame.font.SysFont("consolas", 50, bold=True)
     fonte_instrucao = pygame.font.SysFont("consolas", 22)
+    fonte_pontos_end = pygame.font.SysFont("consolas", 50)
     titulo_menu = fonte_menu.render(TITULO_JOGO, True, (99, 235, 255))
     instrucao_menu = fonte_instrucao.render("Pressione Enter Para Jogar", True, (195, 215, 230))
     pos_titulo = titulo_menu.get_rect(center=(LARGURA_TELA // 2, 220))
@@ -72,6 +74,8 @@ def executar_jogo():
 
     fundo_menu = pygame.image.load("assets/imagens/menu.png").convert()
     fundo_menu = pygame.transform.scale(fundo_menu, tela.get_size())
+    fundo_end = pygame.image.load("assets/imagens/end.png").convert()
+    fundo_end = pygame.transform.scale(fundo_end, tela.get_size())
     lupa_normal = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_normal.png").convert_alpha(), (80, 80))
     lupa_ativa = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_variada.png").convert_alpha(), (80, 80))
 
@@ -247,16 +251,18 @@ def executar_jogo():
 
         elif estado == "vitoria" or estado == "derrota":
             if estado == "vitoria":
-                mensagem = "Parabéns você encontrou a IA!"
+                tela.blit(fundo_end, (0,0))
+                mensagem = "Você encontrou a IA!"
             else:
+                tela.blit(fundo_end, (0,0))
                 mensagem = "Você deixou a IA dominar"
-            surface = fonte_titulo.render(mensagem, True, BRANCO)
-            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 240))
-            tela.blit(surface, retangulo)
-            pontuacao = fonte_titulo.render("Pontuação: " + str(pontos), True, BRANCO)
-            retangulo = pontuacao.get_rect(center=(LARGURA_TELA // 2, 290))
+            titulo_end = fonte_end.render(mensagem, True, (99, 235, 255))
+            retangulo = titulo_end.get_rect(center=(LARGURA_TELA // 2, 70))
+            tela.blit(titulo_end, retangulo)
+            pontuacao = fonte_pontos_end.render("Pontuação: " + str(pontos), True, (195, 215, 230))
+            retangulo = pontuacao.get_rect(center=(LARGURA_TELA // 2, 145))
             tela.blit(pontuacao, retangulo)
-            orientacao = fonte_nome.render("Pressione ENTER para voltar ao menu", True, CINZA)
+            orientacao = fonte_nome.render("reflexao", True, CINZA)
             retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 390))
             tela.blit(orientacao, retangulo)
         # mostra na janela o que foi desenhado neste frame
