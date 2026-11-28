@@ -69,6 +69,10 @@ def executar_jogo():
     posicoes_x = [76,388,699,1011]
     for i in range(len(participantes)):
         participantes[i].imagem = pegar_sprite(CAMINHO_SPRITES, x=posicoes_x[i],y = 57, width=258, height=258, scale=LADO_PARTICIPANTE/258)
+    lupa_normal = pygame.image.load("assets/imagens/sprite_lupa_normal.png").convert_alpha()
+    lupa_ativa = pygame.image.load("assets/imagens/sprite_lupa_variada.png").convert_alpha()
+    lupa_normal = pygame.transform.scale(lupa_normal,(48,48))
+    lupa_ativa = pygame.transform.scale(lupa_ativa,(48,48))
     while rodando:
 
         # O dt faz o tempo ser o mesmo em qualquer computador
@@ -91,7 +95,8 @@ def executar_jogo():
 
         # posição atual do mouse: (x, y) 
         # lembrem de usar a variavel e n get_pos() toda hora
-        local_mouse = pygame.mouse.get_pos()  
+        pygame.mouse.set_visible(estado != "jogando")
+        local_mouse = pygame.mouse.get_pos()
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
@@ -136,8 +141,11 @@ def executar_jogo():
 
             #Lupa
             # desenhada por último para ficar por cima de tudo
-            pygame.draw.circle(tela, CINZA, (local_mouse), RAIO_LUPA)
-
+            x,y = local_mouse
+            imagem_lupa = lupa_normal
+            if sob_lupa is not None:
+                imagem_lupa = lupa_ativa
+            tela.blit(imagem_lupa,(x-17,y-17))
         # mostra na janela o que foi desenhado neste frame
         pygame.display.flip()
 
