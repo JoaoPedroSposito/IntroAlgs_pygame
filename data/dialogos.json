@@ -1,44 +1,44 @@
 [
   {
-    "assunto": "Onde vamos jantar hoje?",
+    "assunto": "Prova 3 de Computabilidade",
     "ordem": ["A","B","C","D","A","C","B","D","A","D","C","B"],
     "papeis": {
       "A": {
         "humano": [
-          "bora de hamburguer hj? to morrendo de fome kkk",
-          "mano a hamburgueria da esquina ta com promo de 2 por 1",
-          "fechou entao, 20h la na praca?"
+          "E a prova 3 de computabilidade em?",
+          "Absurda aquela questão de indução, o que acharam?",
+          "Não fizemos a msm prova, certeza kkk"
         ],
         "ia": [
-          "Sugiro um hambúrguer. É uma opção prática e agrada a maioria.",
-          "Há uma promoção de dois por um na hamburgueria da esquina.",
-          "Combinado. Podemos nos encontrar às 20h na praça."
+          "O que acharam da prova de computabilidade? dava pra acertar todas!",
+          "Fiz a questão de indução em quatro minutos",
+          "Tem razão, eu deveria ter demorado mais"
         ]
       },
       "B": {
         "humano": [
-          "hmm prefiro algo mais leve, tipo salada?",
-          "ontem comi tanta coisa q ainda to cheio",
-          "blz vou de hamburguer mas sem batata"
+          "Nem me pergunte, achei tenso!",
+          "4 min?? acho que n fizemos a msm prova, chei a de indução bem complicada ",
+          "Sorte a de vcs dois viu"
         ],
         "ia": [
-          "Eu poderia optar por algo mais leve, como uma salada.",
-          "Ontem fiz uma refeição bastante completa, então prefiro algo leve.",
-          "Está bem. Posso acompanhar vocês, desde que seja sem batata frita."
+          "Eu diria que eu acertei todas!",
+          "Concluí essa questão em quatro minutos",
+          "Vocês tem razão, eu devia ter demorado mais"
         ]
       },
       "C": {
         "humano": [
-          "eu vou onde o povo for, to sem grana essa semana",
-          "hamburguer ta bom, so n pode passar de 30 conto",
-          "vou chegar um pouco atrasado, ok?"
+          "Se eu tirei 10 é muito",
+          "Eu demorei uns 20 min só nela ",
+          "Nela eu garanti uns pontinhos, mas estava dificil msm"
         ]
       },
       "D": {
         "humano": [
-          "gente me esperem, saio do trabalho as 19h30",
-          "pelo caminho passo e ja vejo se tem fila",
-          "otimo, nos vemos la entao"
+          "Estava muito dificil msm",
+          "N era impossivel, mas fácil tbm n né",
+          "Eu pulei ela sabendo que ia demorar"
         ]
       }
     }
