@@ -8,15 +8,28 @@ from src.config import (
     TITULO_JOGO,
     RAIO_LUPA,
     LADO_PARTICIPANTE,
+    BARRA_MAXIMO,
+    AUMENTO_ESCANEAMENTO,
+    BARRA_X,
+    BARRA_Y,
+    BARRA_LARGURA,
+    BARRA_ALTURA,
+    COR_BARRA,
+    COR_FUNDO_BARRA,
     TAMANHO_FONTE_TITULO,
     TAMANHO_FONTE_NOME,
     CINZA,
     PRETO,
     BRANCO,
     AZUL_NOTURNO,
+    DURACAO_BALAO,
+    LARGURA_BALAO,
+    LARGURA_ASSUNTO,
+    AUMENTO_MENSAGEM_IA,
     PAINEL_X,
     PAINEL_LARGURA,
     COR_PAINEL,
+    COR_SUSPEITO,
     TAMANHO_FONTE_PISTA,
     ESPACO_LINHA,
     INDENTACAO_PISTA,
@@ -25,7 +38,11 @@ from src.config import (
 )
 from src.participante import Participante
 from src.lupa import Lupa
-from src.rodada import preparar_rodada
+from src.rodada import preparar_rodada, calcular_pontos
+from src.barra import BarraInfluencia
+from src.textos import quebrar_texto
+from src.dialogo import Dialogo
+from src.sprites import pegar_sprite
 
 def executar_jogo():
     """
@@ -46,19 +63,41 @@ def executar_jogo():
     fonte_titulo = pygame.font.Font(None, TAMANHO_FONTE_TITULO)
     fonte_nome = pygame.font.Font(None, TAMANHO_FONTE_NOME)
     fonte_pista = pygame.font.Font(None, TAMANHO_FONTE_PISTA)
+    fonte_menu = pygame.font.SysFont("consolas", 64, bold=True)
+    fonte_instrucao = pygame.font.SysFont("consolas", 22)
+    titulo_menu = fonte_menu.render(TITULO_JOGO, True, (99, 235, 255))
+    instrucao_menu = fonte_instrucao.render("Pressione Enter Para Jogar", True, (195, 215, 230))
+    pos_titulo = titulo_menu.get_rect(center=(LARGURA_TELA // 2, 220))
+    pos_instrucao = instrucao_menu.get_rect(center=(LARGURA_TELA // 2, 275))
+
+    fundo_menu = pygame.image.load("assets/imagens/menu.png").convert()
+    fundo_menu = pygame.transform.scale(fundo_menu, tela.get_size())
+    lupa_normal = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_normal.png").convert_alpha(), (48, 48))
+    lupa_ativa = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_variada.png").convert_alpha(), (48, 48))
+
+    
 
     relogio = pygame.time.Clock()
     rodando = True
 
     # os 4 participantes: (nome, x do centro, y do centro, cor RGB)
     participantes = [
-        Participante("Ana", 150, 200, (90, 160, 250)),
-        Participante("Laerte", 450, 200, (255, 150, 90)),
-        Participante("Paulo", 150, 400, (120, 200, 130)),
-        Participante("Saul", 450, 400, (230,  110, 170)),            
+        Participante("João", 100, 230, (90, 160, 250)),
+        Participante("Paulo", 600, 230, (255, 150, 90)),
+        Participante("Saul", 100, 460, (120, 200, 130)),
+        Participante("Tiago", 600, 460, (230,  110, 170)),            
     ] 
+
+    posicoes_x = [76, 388, 699, 1011]
+    for i in range(len(participantes)):
+        participantes[i].imagem = pegar_sprite(CAMINHO_SPRITES, posicoes_x[i], 57, 258, 258, LADO_PARTICIPANTE / 258)
+
     estado = "menu"
+    suspeito = None
+    barra = BarraInfluencia()
     lupa = Lupa()
+    dialogo = Dialogo()
+    pontos = 0
 
     while rodando:
 
@@ -72,26 +111,46 @@ def executar_jogo():
                 if event.key == pygame.K_RETURN and estado == "menu":
                     # começa a rodada: sorteia a IA e distribui as pistas
                     preparar_rodada(participantes)
+                    dialogo.iniciar(participantes)
+                    suspeito = None
+                    barra = BarraInfluencia()
                     estado = "jogando"
+                elif event.key == pygame.K_RETURN and estado in ("vitoria", "derrota"):
+                    estado = "menu"
+                elif event.key == pygame.K_SPACE and estado == "jogando" and suspeito is not None:
+                    pontos = calcular_pontos(barra.valor_atual, suspeito.eh_ia)
+                    if suspeito.eh_ia:
+                        estado = "vitoria"
+                    else:
+                        estado = "derrota"
                 elif event.key == pygame.K_ESCAPE:
                     # ESC volta ao menu; no menu, ele fecha o jogo
                     if estado == "jogando":
                         estado = "menu"
                     elif estado == "menu":
                         rodando = False
+            # Marcação de suspeito 
+            elif event.type == pygame.MOUSEBUTTONDOWN and estado == "jogando":
+                if event.button == 1:
+                    for participante in participantes:
+                        if participante.esta_sob(event.pos):
+                            if participante is suspeito:
+                                suspeito = None
+                            else:
+                                suspeito = participante
 
+        pygame.mouse.set_visible(estado != "jogando")
         # posição atual do mouse: (x, y) 
         # lembrem de usar a variavel e n get_pos() toda hora
         local_mouse = pygame.mouse.get_pos()  
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
-            surface = fonte_titulo.render(TITULO_JOGO, True, BRANCO)
-            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 200))
-            tela.blit(surface, retangulo)
-            orientacao = fonte_titulo.render("Pressione ENTER para jogar", True, BRANCO)
-            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 300))
-            tela.blit(orientacao, retangulo)
+            tela.blit(fundo_menu, (0, 0))
+            tela.blit(titulo_menu, pos_titulo)
+            if pygame.time.get_ticks() % 1000 < 700:
+                tela.blit(instrucao_menu, pos_instrucao)
+    
             # uma Lupa nova a cada frame no menu: zera o escaneamento ao voltar
             lupa = Lupa()
         elif estado == "jogando":
@@ -99,38 +158,107 @@ def executar_jogo():
             sob_lupa = None
             for participante in participantes:
                 participante.desenhar(tela, fonte_nome)
+                if participante is suspeito:
+                    pygame.draw.rect(tela, COR_SUSPEITO, participante.rect.inflate(5, 5), 3)
+                    surface = fonte_nome.render("SUSPEITO", True, COR_SUSPEITO)
+                    retangulo = surface.get_rect(center=(participante.rect.centerx, participante.rect.bottom + 20))
+                    tela.blit(surface, retangulo)
                 if participante.esta_sob(local_mouse):
                     # inflate(12, 12) devolve uma cópia do quadrado 12 pixels
                     # maior (6 de cada lado); o 3 é a espessura da linha
-                    pygame.draw.rect(tela, BRANCO, participante.rect.inflate(12, 12), 3)    
+                    pygame.draw.rect(tela, BRANCO, participante.rect.inflate(10, 10), 3)    
                     sob_lupa = participante
-
-             # atualizar devolve True no frame em que o escaneamento completa;
+            pontos_possiveis = calcular_pontos(barra.valor_atual, True)
+            pontuacao = fonte_titulo.render("Pontos: " + str(pontos_possiveis), True, BRANCO)
+            retangulo = pontuacao.get_rect(topright=(910, 40))
+            tela.blit(pontuacao, retangulo)
+            # atualizar devolve True no frame em que o escaneamento completa
             # aí a pista do participante escaneado é revelada
             if lupa.atualizar(sob_lupa, tempo_decorrido):
-                lupa.escaneando.revelar_pista()
+                if lupa.escaneando.revelar_pista():
+                   barra.subir_escaneamento(AUMENTO_ESCANEAMENTO)
+
+            barra.atualizar(tempo_decorrido)
+
+            fala = dialogo.atualizar(tempo_decorrido)
+            if fala is not None:
+                quem, texto = fala
+                quem.mensagem_atual = texto
+                quem.tempo_balao = DURACAO_BALAO
+                if quem.eh_ia:
+                    barra.subir(AUMENTO_MENSAGEM_IA)     # sobe com atraso: é o delay combinado
+
+            if barra.encheu():
+                estado = "derrota"
 
             # painel de Pistas 
-            # fundo do painel; é desenhado antes dos textos para ficar por baixo
-            pygame.draw.rect(tela, COR_PAINEL, (PAINEL_X, 0, PAINEL_LARGURA, ALTURA_TELA))
+            pygame.draw.rect(tela, COR_PAINEL, (PAINEL_X, 100, PAINEL_LARGURA, ALTURA_TELA))
             # linha_y é a posição vertical da linha que vai ser escrita; desce a
             # cada linha escrita, como a caneta descendo no caderno
-            linha_y = 20
+            linha_y = 120
             for participante in participantes:
                 surface = fonte_nome.render(participante.nome, True, BRANCO)
                 tela.blit(surface, (PAINEL_X + MARGEM_ESQUERDA, linha_y))
                 linha_y += ESPACO_LINHA
                 for pista in participante.pistas_reveladas:
-                    surface = fonte_pista.render("- " + pista, True, CINZA)
-                    tela.blit(surface, (PAINEL_X + INDENTACAO_PISTA, linha_y))
-                    linha_y += ESPACO_LINHA
+                    for linha in quebrar_texto("- " + pista, fonte_pista, PAINEL_LARGURA - INDENTACAO_PISTA - 10):
+                        surface = fonte_pista.render(linha, True, CINZA)
+                        tela.blit(surface, (PAINEL_X + INDENTACAO_PISTA, linha_y))
+                        linha_y += ESPACO_LINHA
                 # linha em branco entre um participante e o próximo
                 linha_y += ESPACO_LINHA
 
+            # barra de influência
+            pygame.draw.rect(tela, COR_FUNDO_BARRA, (BARRA_X, BARRA_Y, BARRA_LARGURA, BARRA_ALTURA))
+            largura_cheia = int(BARRA_LARGURA * barra.valor_atual / BARRA_MAXIMO)
+            pygame.draw.rect(tela, COR_BARRA, (BARRA_X, BARRA_Y, largura_cheia, BARRA_ALTURA))
+            texto = fonte_nome.render("INFLUÊNCIA DA IA: " + str(int(barra.valor_atual)) + "%", True, BRANCO)
+            tela.blit(texto, (BARRA_X, BARRA_Y - 28))
+
+            linhas_assunto = quebrar_texto("Assunto: " + dialogo.assunto, fonte_pista, LARGURA_ASSUNTO)
+            assunto_y = 20
+            for linha in linhas_assunto:
+                surface = fonte_nome.render(linha, True, BRANCO)
+                tela.blit(surface, (20, assunto_y))
+                assunto_y += ESPACO_LINHA
+
+            for participante in participantes:
+                if participante.tempo_balao > 0:
+                    participante.tempo_balao -= tempo_decorrido
+                    linhas = quebrar_texto(participante.mensagem_atual, fonte_pista, LARGURA_BALAO - 16)
+                    altura = len(linhas) * ESPACO_LINHA + 12
+                    if participante.rect.centerx < LARGURA_TELA // 2:
+                        balao_x = participante.rect.right + 10                    # coluna da esquerda: abre para a direita
+                    else:
+                        balao_x = participante.rect.left - 10 - LARGURA_BALAO     # coluna da direita: abre para a esquerda
+
+                    balao = pygame.Rect(balao_x, participante.rect.top, LARGURA_BALAO, altura)
+                    pygame.draw.rect(tela, BRANCO, balao)
+                    y = balao.top + 6
+                    for linha in linhas:
+                        surface = fonte_pista.render(linha, True, PRETO)
+                        tela.blit(surface, (balao.left + 8, y))
+                        y += ESPACO_LINHA
+
             #Lupa
              # desenhada por último para ficar por cima de tudo
-            pygame.draw.circle(tela, CINZA, (local_mouse), RAIO_LUPA)
+            imagem_lupa = lupa_ativa if sob_lupa is not None else lupa_normal
+            tela.blit(imagem_lupa, (local_mouse[0] - 17, local_mouse[1] - 17))
 
+        elif estado == "vitoria" or estado == "derrota":
+            if estado == "vitoria":
+                mensagem = "Parabéns você encontrou a IA!"
+            else:
+                mensagem = "Você deixou a IA dominar"
+            surface = fonte_titulo.render(mensagem, True, BRANCO)
+            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 240))
+            tela.blit(surface, retangulo)
+            pontuacao = fonte_titulo.render("Pontuação: " + str(pontos), True, BRANCO)
+            retangulo = pontuacao.get_rect(center=(LARGURA_TELA // 2, 290))
+            tela.blit(pontuacao, retangulo)
+            orientacao = fonte_nome.render("Pressione ENTER para voltar ao menu", True, CINZA)
+            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 390))
+            tela.blit(orientacao, retangulo)
         # mostra na janela o que foi desenhado neste frame
         pygame.display.flip()
 

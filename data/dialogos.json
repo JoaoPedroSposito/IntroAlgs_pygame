@@ -1,0 +1,46 @@
+[
+  {
+    "assunto": "Prova 3 de Computabilidade",
+    "ordem": ["A","B","C","D","A","C","B","D","A","D","C","B"],
+    "papeis": {
+      "A": {
+        "humano": [
+          "E a prova 3 de computabilidade em?",
+          "Absurda aquela questão de indução, o que acharam?",
+          "Não fizemos a msm prova, certeza kkk"
+        ],
+        "ia": [
+          "O que acharam da prova de computabilidade? dava pra acertar todas!",
+          "Fiz a questão de indução em quatro minutos",
+          "Tem razão, eu deveria ter demorado mais"
+        ]
+      },
+      "B": {
+        "humano": [
+          "Nem me pergunte, achei tenso!",
+          "4 min?? acho que n fizemos a msm prova, chei a de indução bem complicada ",
+          "Sorte a de vcs dois viu"
+        ],
+        "ia": [
+          "Eu diria que eu acertei todas!",
+          "Concluí essa questão em quatro minutos",
+          "Vocês tem razão, eu devia ter demorado mais"
+        ]
+      },
+      "C": {
+        "humano": [
+          "Se eu tirei 10 é muito",
+          "Eu demorei uns 20 min só nela ",
+          "Nela eu garanti uns pontinhos, mas estava dificil msm"
+        ]
+      },
+      "D": {
+        "humano": [
+          "Estava muito dificil msm",
+          "N era impossivel, mas fácil tbm n né",
+          "Eu pulei ela sabendo que ia demorar"
+        ]
+      }
+    }
+  }
+]

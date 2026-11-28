@@ -31,8 +31,10 @@ class Participante:
             fonte (pygame.font.Font): fonte usada no nome
         """
         pygame.draw.rect(tela, self.cor, self.rect)
+        if self.imagem is not None:
+            tela.blit(self.imagem, self.rect)
         surface = fonte.render(self.nome, True, BRANCO)
-        retangulo = surface.get_rect(center=(self.rect.centerx, self.rect.bottom + 20))
+        retangulo = surface.get_rect(center=(self.rect.centerx, self.rect.bottom - 120))
         tela.blit(surface, retangulo)
 
     def esta_sob(self, mouse):
