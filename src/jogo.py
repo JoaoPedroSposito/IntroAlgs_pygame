@@ -42,6 +42,7 @@ from src.rodada import preparar_rodada, calcular_pontos
 from src.barra import BarraInfluencia
 from src.textos import quebrar_texto
 from src.dialogo import Dialogo
+from src.sprites import pegar_sprite
 
 def executar_jogo():
     """
@@ -62,17 +63,35 @@ def executar_jogo():
     fonte_titulo = pygame.font.Font(None, TAMANHO_FONTE_TITULO)
     fonte_nome = pygame.font.Font(None, TAMANHO_FONTE_NOME)
     fonte_pista = pygame.font.Font(None, TAMANHO_FONTE_PISTA)
+    fonte_menu = pygame.font.SysFont("consolas", 64, bold=True)
+    fonte_instrucao = pygame.font.SysFont("consolas", 22)
+    titulo_menu = fonte_menu.render(TITULO_JOGO, True, (99, 235, 255))
+    instrucao_menu = fonte_instrucao.render("Pressione Enter Para Jogar", True, (195, 215, 230))
+    pos_titulo = titulo_menu.get_rect(center=(LARGURA_TELA // 2, 220))
+    pos_instrucao = instrucao_menu.get_rect(center=(LARGURA_TELA // 2, 275))
+
+    fundo_menu = pygame.image.load("assets/imagens/menu.png").convert()
+    fundo_menu = pygame.transform.scale(fundo_menu, tela.get_size())
+    lupa_normal = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_normal.png").convert_alpha(), (48, 48))
+    lupa_ativa = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_variada.png").convert_alpha(), (48, 48))
+
+    
 
     relogio = pygame.time.Clock()
     rodando = True
 
     # os 4 participantes: (nome, x do centro, y do centro, cor RGB)
     participantes = [
-        Participante("Ana", 100, 230, (90, 160, 250)),
-        Participante("Laerte", 600, 230, (255, 150, 90)),
-        Participante("Paulo", 100, 460, (120, 200, 130)),
-        Participante("Saul", 600, 460, (230,  110, 170)),            
+        Participante("João", 100, 230, (90, 160, 250)),
+        Participante("Paulo", 600, 230, (255, 150, 90)),
+        Participante("Saul", 100, 460, (120, 200, 130)),
+        Participante("Tiago", 600, 460, (230,  110, 170)),            
     ] 
+
+    posicoes_x = [76, 388, 699, 1011]
+    for i in range(len(participantes)):
+        participantes[i].imagem = pegar_sprite(CAMINHO_SPRITES, posicoes_x[i], 57, 258, 258, LADO_PARTICIPANTE / 258)
+
     estado = "menu"
     suspeito = None
     barra = BarraInfluencia()
@@ -120,18 +139,18 @@ def executar_jogo():
                             else:
                                 suspeito = participante
 
+        pygame.mouse.set_visible(estado != "jogando")
         # posição atual do mouse: (x, y) 
         # lembrem de usar a variavel e n get_pos() toda hora
         local_mouse = pygame.mouse.get_pos()  
         tela.fill(AZUL_NOTURNO)
 
         if estado == "menu":
-            surface = fonte_titulo.render(TITULO_JOGO.upper(), True, BRANCO)
-            retangulo = surface.get_rect(center=(LARGURA_TELA // 2, 250))
-            tela.blit(surface, retangulo)
-            orientacao = fonte_titulo.render("Pressione ENTER para jogar", True, BRANCO)
-            retangulo = orientacao.get_rect(center=(LARGURA_TELA // 2, 350))
-            tela.blit(orientacao, retangulo)
+            tela.blit(fundo_menu, (0, 0))
+            tela.blit(titulo_menu, pos_titulo)
+            if pygame.time.get_ticks() % 1000 < 700:
+                tela.blit(instrucao_menu, pos_instrucao)
+    
             # uma Lupa nova a cada frame no menu: zera o escaneamento ao voltar
             lupa = Lupa()
         elif estado == "jogando":
@@ -223,7 +242,8 @@ def executar_jogo():
 
             #Lupa
              # desenhada por último para ficar por cima de tudo
-            pygame.draw.circle(tela, CINZA, (local_mouse), RAIO_LUPA)
+            imagem_lupa = lupa_ativa if sob_lupa is not None else lupa_normal
+            tela.blit(imagem_lupa, (local_mouse[0] - 17, local_mouse[1] - 17))
 
         elif estado == "vitoria" or estado == "derrota":
             if estado == "vitoria":
