@@ -72,8 +72,8 @@ def executar_jogo():
 
     fundo_menu = pygame.image.load("assets/imagens/menu.png").convert()
     fundo_menu = pygame.transform.scale(fundo_menu, tela.get_size())
-    lupa_normal = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_normal.png").convert_alpha(), (48, 48))
-    lupa_ativa = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_variada.png").convert_alpha(), (48, 48))
+    lupa_normal = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_normal.png").convert_alpha(), (80, 80))
+    lupa_ativa = pygame.transform.scale(pygame.image.load("assets/imagens/sprite_lupa_variada.png").convert_alpha(), (80, 80))
 
     
 
@@ -243,7 +243,7 @@ def executar_jogo():
             #Lupa
              # desenhada por último para ficar por cima de tudo
             imagem_lupa = lupa_ativa if sob_lupa is not None else lupa_normal
-            tela.blit(imagem_lupa, (local_mouse[0] - 17, local_mouse[1] - 17))
+            tela.blit(imagem_lupa, (local_mouse[0] - 25, local_mouse[1] - 25))
 
         elif estado == "vitoria" or estado == "derrota":
             if estado == "vitoria":
